@@ -68,3 +68,12 @@ class Account(AbstractBaseUser):
 def create_auth_token(sender, instance=None, created=False, **kwargs):
     if created:
         Token.objects.create(user=instance)
+
+
+class Profile(models.Model):
+    owner = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                 on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+
+    def __str__(self):
+        return f'{self.owner.username} Profile'

@@ -1,13 +1,19 @@
 from rest_framework import serializers, status
 from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
 
-from .serializers import RegistrationSerializer
+from .models import Account
+
+
+from .serializers import AccountSerializer, RegistrationSerializer
 from rest_framework.authtoken.models import Token
+from rest_framework.authtoken.views import ObtainAuthToken
 
 
 @api_view(['POST', ])
+@permission_classes((AllowAny,))
 def registration_view(request):
     serializer = RegistrationSerializer(data=request.data)
     data = {}
@@ -21,3 +27,23 @@ def registration_view(request):
     else:
         data = serializer.errors
     return Response(data)
+
+
+class CustomObtainAuthToken(ObtainAuthToken):
+    def post(self, request, *args, **kwargs):
+        response = super(CustomObtainAuthToken, self).post(
+            request, *args, **kwargs)
+        token = Token.objects.get(key=response.data['token'])
+        return Response({'token': token.key, 'id': token.user_id, })
+
+
+@api_view(['GET', ])
+def api_detail_user_view(request, id):
+
+    try:
+        user = Account.objects.get(id=id)
+    except Account.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = AccountSerializer(user)
+    return Response(serializer.data)

@@ -29,3 +29,16 @@ class RegistrationSerializer(serializers.ModelSerializer):
         account.set_password(password)
         account.save()
         return account
+
+
+class AccountSerializer(serializers.ModelSerializer):
+
+    image = serializers.SerializerMethodField('get_profile_image')
+
+    class Meta:
+        model = Account
+        fields = ['email', 'username', 'id',  'image']
+
+    def get_profile_image(self, profile):
+        image = profile.profile.image.url
+        return image

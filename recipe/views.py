@@ -1,11 +1,26 @@
-from rest_framework import serializers, status
+from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
-from rest_framework.permissions import IsAuthenticated
+from rest_framework.permissions import IsAuthenticated, IsAuthenticatedOrReadOnly
+from .permissions import IsOwnerOrReadOnly
+
 
 # from account.
 from .models import Recipe
 from .serializers import RecipeSerializer
+
+
+@api_view(['GET', ])
+@permission_classes((IsAuthenticatedOrReadOnly,))
+def api_detail_recipes_view(request):
+
+    try:
+        recipe = Recipe.objects.all()
+    except Recipe.DoesNotExist:
+        return Response(status=status.HTTP_404_NOT_FOUND)
+
+    serializer = RecipeSerializer(recipe, many=True)
+    return Response(serializer.data)
 
 
 @api_view(['GET', ])
@@ -22,7 +37,7 @@ def api_detail_recipe_view(request, id):
 
 
 @api_view(['PUT', ])
-@permission_classes((IsAuthenticated,))
+@permission_classes((IsOwnerOrReadOnly,))
 def api_update_recipe_view(request, id):
 
     try:
@@ -44,7 +59,7 @@ def api_update_recipe_view(request, id):
 
 
 @api_view(['DELETE', ])
-@permission_classes((IsAuthenticated,))
+@permission_classes((IsOwnerOrReadOnly,))
 def api_delete_recipe_view(request, id):
 
     try:
