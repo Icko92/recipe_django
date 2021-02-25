@@ -2,6 +2,8 @@ from pathlib import Path
 
 import os
 
+import django_heroku
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -15,7 +17,7 @@ SECRET_KEY = '2gu=#-*3id(*3hs&(g&jg#am%!epsy8u*%&mqp=_a=wrw^j++d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://recipe-blog-icko.herokuapp.com']
+ALLOWED_HOSTS = ['recipe-blog-icko.herokuapp.com']
 
 
 # Application definition
@@ -163,3 +165,5 @@ DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
 # AWS_S3_SIGNATURE_VERSION = 's3v4'
 AWS_S3_REGION_NAME = 'us-east-2'
 AWS_S3_ADDRESSING_STYLE = "virtual"
+
+django_heroku.settings(locals())
