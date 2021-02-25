@@ -15,7 +15,7 @@ SECRET_KEY = '2gu=#-*3id(*3hs&(g&jg#am%!epsy8u*%&mqp=_a=wrw^j++d'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['recipe-blog-icko.herokuapp.com']
 
 
 # Application definition
