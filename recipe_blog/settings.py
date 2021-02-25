@@ -135,11 +135,7 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
-)
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -153,9 +149,10 @@ CORS_ALLOW_ALL_ORIGINS = True
 # os.environ.get('AWS_USER_ID')
 # os.environ.get('AWS_SECRET')
 
-AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+AWS_ACCESS_KEY_ID = os.environ.get('AKIA3RHLYPPJQ5RV4B7P')
+AWS_SECRET_ACCESS_KEY = os.environ.get(
+    '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')
+AWS_STORAGE_BUCKET_NAME = os.environ.get('recipe-bucket-icko')
 
 AWS_S3_FILE_OVERWRITE = False
 AWS_DEFAULT_ACL = None
