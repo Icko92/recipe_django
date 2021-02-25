@@ -14,6 +14,7 @@ class Recipe(models.Model):
                               on_delete=models.CASCADE)
     title = models.CharField(max_length=100)
     content = models.TextField(blank=False, unique=True)
+    image = models.ImageField(default='default.jpg', upload_to='recipe_pics')
     categories = models.ManyToManyField(Category)
     created_at = models.DateTimeField(auto_now_add=True)
 
