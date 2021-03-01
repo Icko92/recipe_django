@@ -3,6 +3,8 @@ from rest_framework.authtoken.models import Token
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import AllowAny
+from .permissions import IsOwnerOrReadOnly
+
 
 from .models import Account
 
@@ -38,6 +40,7 @@ class CustomObtainAuthToken(ObtainAuthToken):
 
 
 @api_view(['GET', ])
+@permission_classes((IsOwnerOrReadOnly,))
 def api_detail_user_view(request, id):
 
     try:

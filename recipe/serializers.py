@@ -11,9 +11,15 @@ class CategorySerializer(serializers.ModelSerializer):
 
 class RecipeSerializer(serializers.ModelSerializer):
 
-    categories = CategorySerializer(read_only=True, many=True)
+    # categories = CategorySerializer(many=True)
+    username = serializers.SerializerMethodField('get_username_from_owner')
 
     class Meta:
         model = Recipe
-        fields = ['id', 'owner', 'title',
+        fields = ['id', 'username',  'title',
                   'content', 'image', 'categories', 'created_at']
+        depth = 1
+
+    def get_username_from_owner(self, recipe):
+        username = recipe.owner.username
+        return username

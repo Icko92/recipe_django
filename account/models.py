@@ -7,6 +7,15 @@ from django.dispatch import receiver
 from rest_framework.authtoken.models import Token
 
 
+class Profile(models.Model):
+    owner = models.OneToOneField(settings.AUTH_USER_MODEL,
+                                 on_delete=models.CASCADE)
+    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+
+    def __str__(self):
+        return f'{self.owner.username} Profile'
+
+
 class MyAccountManager(BaseUserManager):
     def create_user(self, email, username, password=None):
         if not email:
@@ -70,10 +79,12 @@ def create_auth_token(sender, instance=None, created=False, **kwargs):
         Token.objects.create(user=instance)
 
 
-class Profile(models.Model):
-    owner = models.OneToOneField(settings.AUTH_USER_MODEL,
-                                 on_delete=models.CASCADE)
-    image = models.ImageField(default='default.jpg', upload_to='profile_pics')
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def create_profile(sender, instance, created, **kvargs):
+    if(created):
+        Profile.objects.create(owner=instance)
 
-    def __str__(self):
-        return f'{self.owner.username} Profile'
+
+@receiver(post_save, sender=settings.AUTH_USER_MODEL)
+def save_profile(sender, instance, **kvargs):
+    instance.profile.save()
